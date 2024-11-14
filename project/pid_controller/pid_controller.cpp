@@ -38,6 +38,7 @@ void PID::UpdateError(double cte) {
    prop_error = cte; // P controller is directly proprtional to cte
    int_error += cte; // accumulate error over time
    diff_error = (cte-prev_cte)/ delta_time; // approximate differentiation of error over delta_time
+   prev_cte = cte;
 }
 
 double PID::TotalError() {
