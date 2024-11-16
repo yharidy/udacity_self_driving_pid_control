@@ -28,7 +28,7 @@ void PID::Init(double Kpi, double Kii, double Kdi, double output_lim_maxi, doubl
    int_error = 0.0;
    diff_error = 0.0;
    prev_cte = 0.0;
-   delta_time = 1.0;
+   delta_time = 0.0;
 }
 
 
@@ -38,7 +38,10 @@ void PID::UpdateError(double cte) {
    **/
    prop_error = cte; // P controller is directly proprtional to cte
    int_error += cte*delta_time; // accumulate error over time
-   diff_error = (cte-prev_cte)/ delta_time; // approximate differentiation of error over delta_time
+   if (delta_time > 0.0)
+   {
+      diff_error = (cte-prev_cte)/ delta_time; // approximate differentiation of error over delta_time
+   }
    prev_cte = cte;
 }
 
@@ -47,7 +50,7 @@ double PID::TotalError() {
    * TODO: Calculate and return the total error
     * The code should return a value in the interval [output_lim_mini, output_lim_maxi]
    */
-   double control = - (Kp*prop_error + Ki*int_error  + Kd*diff_error);
+   double control = -(Kp*prop_error + Ki*int_error  + Kd*diff_error);
    if (control < output_lim_min) return output_lim_min;
    if (control > output_lim_max) return output_lim_max;
    return control;

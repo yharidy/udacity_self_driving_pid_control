@@ -342,7 +342,7 @@ int main ()
           * TODO (step 2): compute the throttle error (error_throttle) from the position and the desired speed
           **/
           // modify the following line for step 2
-          error_throttle = v_points.back()-velocity; // positive error when going too fast
+          error_throttle = velocity - v_points[v_points.size()-1]; // positive error when going too fast
           double throttle_output;
           double brake_output;
 
