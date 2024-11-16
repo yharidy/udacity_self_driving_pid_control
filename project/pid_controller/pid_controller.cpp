@@ -28,6 +28,7 @@ void PID::Init(double Kpi, double Kii, double Kdi, double output_lim_maxi, doubl
    int_error = 0.0;
    diff_error = 0.0;
    prev_cte = 0.0;
+   delta_time = 1.0;
 }
 
 
@@ -36,7 +37,7 @@ void PID::UpdateError(double cte) {
    * TODO: Update PID errors based on cte.
    **/
    prop_error = cte; // P controller is directly proprtional to cte
-   int_error += cte; // accumulate error over time
+   int_error += cte*delta_time; // accumulate error over time
    diff_error = (cte-prev_cte)/ delta_time; // approximate differentiation of error over delta_time
    prev_cte = cte;
 }
@@ -57,4 +58,5 @@ double PID::UpdateDeltaTime(double new_delta_time) {
    * TODO: Update the delta time with new value
    */
    delta_time = new_delta_time;
+   return delta_time;
 }
