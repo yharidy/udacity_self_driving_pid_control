@@ -226,13 +226,13 @@ int main ()
   **/
 
   PID pid_steer = PID();
-  double KpSteer = 0.29;
-  double KiSteer = 0.0011;
-  double KdSteer = 0.3;
+  double KpSteer = 0.15;
+  double KiSteer = 0.002;
+  double KdSteer = 0.0008;
   pid_steer.Init(KpSteer, KiSteer, KdSteer, 1.2, -1.2);
   PID pid_throttle = PID();
-  double KpThrottle = 0.21;
-  double KiThrottle = 0.0009;
+  double KpThrottle = 0.05;
+  double KiThrottle = 0.08;
   double KdThrottle = 0.1;
   pid_throttle.Init(KpThrottle, KiThrottle, KdThrottle, 1.0, -1.0);
 
@@ -310,7 +310,7 @@ int main ()
           **/
          // the desired yaw is the angle between the planned next waypoint and the current position
           double desired_yaw = angle_between_points(x_position, y_position, x_points[x_points.size()-1], y_points[y_points.size()-1]);
-          error_steer = yaw-desired_yaw;//positive error when oversteeting
+          error_steer = desired_yaw - yaw;//positive error when understeering
 
           /**
           * TODO (step 3): uncomment these lines
@@ -344,7 +344,7 @@ int main ()
           * TODO (step 2): compute the throttle error (error_throttle) from the position and the desired speed
           **/
           // modify the following line for step 2
-          error_throttle = velocity - v_points[v_points.size()-1]; // positive error when going too fast
+          error_throttle = v_points[v_points.size()-1] - velocity; // positive error when going too fast
           double throttle_output;
           double brake_output;
 
