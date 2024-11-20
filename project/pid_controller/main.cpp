@@ -229,12 +229,12 @@ int main ()
   // double KpSteer = 0.21;
   // double KiSteer = 0.02;
   // double KdSteer = 0.007;
-  pid_steer.Init(0.28, 0.000, 0.08, 1.2, -1.2);
+  pid_steer.Init(0.25, 0.000, 0.09, 1.2, -1.2);
   PID pid_throttle = PID();
   // double KpThrottle = 0.04;
   // double KiThrottle = 0.08;
   // double KdThrottle = 0.018;
-  pid_throttle.Init(0.21, 0.0011, 0.08, 1.0, -1.0);
+  pid_throttle.Init(0.20, 0.0009, 0.08, 1.0, -1.0);
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
