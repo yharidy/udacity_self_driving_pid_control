@@ -229,7 +229,7 @@ int main ()
   // double KpSteer = 0.21;
   // double KiSteer = 0.02;
   // double KdSteer = 0.007;
-  pid_steer.Init(0.25, 0.000, 0.09, 1.2, -1.2);
+  pid_steer.Init(0.2, 0.0001, 0.05, 1.2, -1.2);
   PID pid_throttle = PID();
   // double KpThrottle = 0.04;
   // double KiThrottle = 0.08;
@@ -309,8 +309,26 @@ int main ()
           * TODO (step 3): compute the steer error (error_steer) from the position and the desired trajectory
           **/
          // the desired yaw is the angle between the planned next waypoint and the current position
-          double desired_yaw = angle_between_points(x_position, y_position, x_points[x_points.size()-1], y_points[y_points.size()-1]);
-          error_steer = desired_yaw - yaw;//positive error when understeering
+          int index = 0;     
+          double dist_min;   
+          for(int i=0; i<x_points.size(); ++i){
+            //calc distance between planner points and vehicle position
+            double distance = pow((x_position - x_points[i]), 2) + pow((y_position - y_points[i]), 2);
+            
+            if(i == 0){
+              dist_min = distance;
+            }
+            else{
+              // Check if new dist is less than existing min distance
+              if((distance < dist_min) && (x_points[i] > x_position)){
+                index = i;
+                dist_min = distance;
+              }
+            }
+              
+          }
+          double desired_yaw = angle_between_points(x_position, y_position, x_points[index], y_points[index]);
+          error_steer = desired_yaw-yaw;//positive error when understeering
 
           /**
           * TODO (step 3): uncomment these lines
