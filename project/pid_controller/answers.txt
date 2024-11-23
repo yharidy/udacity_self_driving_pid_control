@@ -1,7 +1,28 @@
 // Answer the following questions:
 
 // Add the plots to your report and explain them (describe what you see)
+The plots can be found in the images directory. In the throttle plot, it can be seen that the controller applies the throttle or the brakes according to the sign of the error.
+Moreover, the controller output is trending in the same direction as the error, which is an indicator that the controller is trying to stabilize the error.
+Similarly, in the steering plot, it can be seen that the steering output is following the same direction as the steering error, which indicates that the controller is trying to correct the error.
+
 // What is the effect of the PID according to the plots, how each part of the PID affects the control command?
+The P-controller responds proportionally to the magnitude of the error. It therefore affects the distance between the controller output and the error.
+The D-Controller reacts to the change of the error over time and is proportional to the derivative of the error values over time. It dampens the control output and reduces oscillations in the plot.
+The I-controller reacts to the sum of error over time (the area under the error curve). It aims to eliminate any steady state error.
+Its effect can be seen in areas in the plot where the error is relatively stable but the controller output is changing slightly to try to eliminate the steady state error
+
+
 // How would you design a way to automatically tune the PID parameters?
+One way to automatically tune the parameters is to model the system dynamics using transfer functions for example and then use the model to calculate optimal parameters using the pole pllacement method or the Ziegler Nichols method.
+Without knowing the system model, different optimization methods such as gradient descent to optimize the parameters to minimize the errors.
+Moreover, we can use evolutionary algorithms such as particle swarm optimization to explore a wide range of parameters and choose the best fitting
+
 // PID controller is a model free controller, i.e. it does not use a model of the car. Could you explain the pros and cons of this type of controller?
 // (Optional) What would you do to improve the PID controller?
+
+One of the benefits of using a Model Predictve Controller is that it can predict future system behavior and use this prediction to calculate its output, which leads 
+to better performance than a reactive controller such as the PID controller, especially in complicated systesms.
+Model Predictve Controllers are also good for managing systems with multiple interacting variables such as throttle and steering.
+The cons of using an MPC is that it is harder to implement and more computationally expensive. Also it requires an accurate model of the system which can be hard to achieve 
+in complex nonlinear systems. Moreover the cost function of MPCs can be hard to tune. 
+On the other hand, PID controllers (or model-free controllers) are easy to implement, computationally inexpensive and are versatile, i.e. they can be used to control any parameters without the need for modelling the system.

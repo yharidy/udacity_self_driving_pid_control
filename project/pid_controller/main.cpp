@@ -226,15 +226,15 @@ int main ()
   **/
 
   PID pid_steer = PID();
-  // double KpSteer = 0.21;
-  // double KiSteer = 0.02;
-  // double KdSteer = 0.007;
-  pid_steer.Init(0.2, 0.0001, 0.05, 1.2, -1.2);
+  double KpSteer = 0.21;
+  double KiSteer = 0.0002;
+  double KdSteer = 0.09;
+  pid_steer.Init(KpSteer, KiSteer, KdSteer, 1.2, -1.2);
   PID pid_throttle = PID();
-  // double KpThrottle = 0.04;
-  // double KiThrottle = 0.08;
-  // double KdThrottle = 0.018;
-  pid_throttle.Init(0.20, 0.0009, 0.08, 1.0, -1.0);
+  double KpThrottle = 0.20;
+  double KiThrottle = 0.0009;
+  double KdThrottle = 0.08;
+  pid_throttle.Init(KpThrottle, KiThrottle, KdThrottle, 1.0, -1.0);
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
@@ -308,18 +308,17 @@ int main ()
           /**
           * TODO (step 3): compute the steer error (error_steer) from the position and the desired trajectory
           **/
-         // the desired yaw is the angle between the planned next waypoint and the current position
+         // get the closest point on the trajectory to the ego-vehicle's position
           int index = 0;     
           double dist_min;   
           for(int i=0; i<x_points.size(); ++i){
-            //calc distance between planner points and vehicle position
             double distance = pow((x_position - x_points[i]), 2) + pow((y_position - y_points[i]), 2);
             
             if(i == 0){
               dist_min = distance;
             }
             else{
-              // Check if new dist is less than existing min distance
+              // Check if new dist is less than existing min distance and if the waypoint is ahead of the ego-vehicle
               if((distance < dist_min) && (x_points[i] > x_position)){
                 index = i;
                 dist_min = distance;
